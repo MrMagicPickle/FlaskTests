@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Kanji Revision{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class= "testWord">
+  <h1>{{ testWord['jpWord'] }}</h1>
+</div>
+<form method="post">
+  <label for="meaning">Meaning</label>
+  <input name="meaning" id="meaning" value="{{ request.form['meaning'] }}" required>
+  <label for="pronunciation">Pronunciation</label>
+  <input name="pronunciation" id="pronunciation" value="{{ request.form['pronunciation'] }}" required>
+  <input type="submit" value="Confirm">
+  
+</form>
+
+{% endblock %}

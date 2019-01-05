@@ -1,0 +1,13 @@
+-- Remove the drop table line later on.
+DROP TABLE IF EXISTS jpVocab;
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE jpVocab (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ jpWord TEXT UNIQUE NOT NULL,
+ pronunciation TEXT NOT NULL,
+ meaning TEXT NOT NULL,
+ dateRevised TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ revisable BIT NOT NULL DEFAULT 1,
+ stability FLOAT NOT NULL DEFAULT 1.0
+);

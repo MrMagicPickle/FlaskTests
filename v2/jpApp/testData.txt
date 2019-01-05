@@ -1,0 +1,6 @@
+﻿食べる taberu eat
+飲む nomu drink
+嬉しい ureshii happy
+怖いい kowaii scared
+悲しい kanashii sad
+嫌い kirai dislike

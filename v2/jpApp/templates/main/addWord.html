@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Add New JP Word{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="jpWord">JP Word</label>
+    <input name="jpWord" id="jpWord" value="{{ request.form['jpWord'] }}" required>
+    <label for="body">Pronunciation</label>
+    <input name="pronunciation" id="pronunciation" value="{{ request.form['pronunciation'] }}" required>    
+    <label for="body">meaning</label>
+    <input name="meaning" id="meaning" value="{{ request.form['meaning'] }}" required>    
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}
