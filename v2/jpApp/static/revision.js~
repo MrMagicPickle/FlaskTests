@@ -1,0 +1,39 @@
+"use strict";
+
+
+
+
+function processInput() {
+    console.log("hi");
+    let userMeaning = document.getElementById("meaning").value;
+    let userPrc = document.getElementById("pronunciation").value;
+
+    //Make an API call.
+    let req = new XMLHttpRequest();
+    let query = "userMeaning=" + userMeaning;
+    query += "&userPrc=" + userPrc;
+    query += "&jpWord=" + jpWord;
+    
+    req.open('GET', 'http://localhost:5000/revision/processUserInput?'+query, true);
+    req.onload = function(data, code) {
+	console.log("Callback called")
+	console.log(data);
+	let validInput = JSON.parse(data.target.response).validInput;
+
+	// We can do edit the html DOM here.
+	let containerDiv = document.getElementById("mainContainer");	
+	if (validInput) {
+	    containerDiv.style.backgroundColor = "lightblue";
+	    
+	} else {
+	    containerDiv.style.backgroundColor = "red";
+	}
+
+	//Show the "Next" button.
+	document.getElementById("nextBtnContainer").style.display = "block";
+    }
+    req.send();
+}
+
+
+

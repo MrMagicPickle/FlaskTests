@@ -32,4 +32,8 @@ def create_app(test_config=None):
     from . import revision
     app.register_blueprint(revision.bp)
 
+    from . import study
+    app.register_blueprint(study.bp)
+    
+
     return app

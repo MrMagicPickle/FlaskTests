@@ -1,11 +1,16 @@
 import sqlite3
 from flask import current_app, g
 from flask.cli import with_appcontext
+from datetime import datetime
+import os
+
+from jpApp.functions import *
 import click
 
+#Init the database. - Call this whenever you changed the structure of the .sql
 def init_db():
     db = get_db()
-    with current_app.open_resource("schema.sql") as f:
+    with current_app.open_resource("schema2.sql") as f:
         db.executescript(f.read().decode('utf8'))
     
 def get_db():
@@ -37,6 +42,7 @@ def init_db_command():
 def init_app(app):
     app.cli.add_command(init_db_command)
     app.cli.add_command(loadTestData)
+    app.cli.add_command(loadData)
     app.cli.add_command(clearDb)
     app.teardown_appcontext(close_db)
 
@@ -69,3 +75,65 @@ def clearDb():
     db.execute('DELETE FROM jpVocab')
     db.commit()
     
+
+def updateDB():
+    db = get_db()
+    jpVocabs = db.execute(
+        'SELECT * FROM jpVocab'
+    ).fetchall()
+
+
+    for word in jpVocabs:
+        learntDate = word['dateRevised']
+        currDate = datetime.now()
+        daysElapsed = (currDate - learntDate).days + 1
+        stability = word['stability']
+        memRet = getR(stability, daysElapsed)
+        if isRevisable(memRet):
+            db.execute(
+                'UPDATE jpVocab SET revisable = ?'
+                ' WHERE id = ?',
+                (1, word['id'])
+            )
+    db.commit()
+        
+
+@click.command('loadData')
+@with_appcontext
+def loadData():
+    db = get_db()
+
+    jpVocabDir = "C:/Users/User-HP/Desktop/My Projects/FlaskTest/v2/jpApp/data/"
+    for root, dirs, files in os.walk(jpVocabDir):
+        for file in files:
+            filepath = root + os.sep + file
+            #simple validation.
+            if filepath.endswith(".txt"):
+                #read the file and load the data into our db.
+                infile = open(filepath, 'r', encoding='utf8')
+                level = getLevel(file)
+                for line in infile:
+                    line = line.strip('\n')
+                    line = line.split('/')
+                    db.execute(
+                        'INSERT INTO coreJpDict (jpWord, pronunciation, meaning, enSentence, jpSentence, wordLevel)'
+                        ' VALUES (?,?,?,?,?,?)',
+                        (line[0], line[1], line[2], line[4], line[3], level)
+                    )
+
+
+                    
+                infile.close()
+    db.commit()                                    
+
+
+def getLevel(filename):
+    index = filename.find('.txt')
+    lv = ""
+    for i in range (index, -1, -1):
+        if filename[i] == "v":
+            break
+
+        lv += filename[i]
+
+    return lv[::-1] #return reversed string.
