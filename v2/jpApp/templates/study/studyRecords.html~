@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1> {% block title %}The Database Records {% endblock %}</h1>
+{% endblock %}
+
+{% block content%}
+{% for rec in records %}
+<div class = "records">
+  <h1>{{ rec['jpWord'] }}</h1>
+  <div class="description">
+    <p>Meaning: {{ rec['meaning'] }}</p>
+    <p>Pronunciation: {{ rec['pronunciation'] }}</p>
+    <p>Date Revised: {{ rec['dateRevised'].strftime('%Y-%m-%d') }}</p>
+    <p>Revisable: {{ rec['revisable'] }}</p>
+    <p>Stability: {{ rec['stability'] }}</p>
+    <p>Level: {{ rec['level'] }}</p>
+    <p>English Sentence: {{ rec['enSentence'] }}</p>
+    <p>Japanese Sentence: {{ rec['jpSentence'] }}</p>        
+  </div>
+</div>
+{% if not loop.last %}
+<hr>
+{% endif %}
+{% endfor %}
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1> {% block title %}Study Table Records {% endblock %}</h1>
+{% endblock %}
+
+{% block content%}
+{% for rec in records %}
+<div class = "records">
+  <h1>{{ rec['dict_id'] }}</h1>
+  <p>{{ rec['jpWord'] }}</p>
+</div>
+{% if not loop.last %}
+<hr>
+{% endif %}
+{% endfor %}
+{% endblock %}
+

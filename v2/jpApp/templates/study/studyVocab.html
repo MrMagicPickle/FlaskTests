@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Kanji Study{% endblock %}</h1>
+<script src="{{url_for('static', filename='study.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="mainContainer">
+<div class= "studyWord">
+  <h1>{{ studyWord['jpWord'] }}</h1>  
+</div>
+<hr>
+<div class= "studyInfo">
+  <p>{{ studyWord['pronunciation'] }}</p>
+  <p>{{ studyWord['meaning'] }}</p>
+  <p>{{ studyWord['jpSentence'] }}</p>
+  <p>{{ studyWord['enSentence'] }}</p>    
+</div>
+
+<button onclick="goNext()">Next</button>
+
+
+
+    
+<script>
+  "use strict";
+  var id = "{{studyWord['id']}}";  //This gives us access to this variable.
+  var level = "{{currLevel}}";
+</script>
+
+
+{% endblock %}

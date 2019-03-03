@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Kanji Revision{% endblock %}</h1>
+<script src="{{url_for('static', filename='revision.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="mainContainer">
+<div class= "reviseWord">
+  <h1>{{ reviseWord['jpWord'] }}</h1>
+</div>
+<form method="post">
+  <label for="meaning">Meaning</label>
+  <input name="meaning" id="meaning" value="{{ request.form['meaning'] }}" required>
+  <label for="pronunciation">Pronunciation</label>
+  <input name="pronunciation" id="pronunciation" value="{{ request.form['pronunciation'] }}" required>
+  <input id="submitBtn" type="button" value="Submit" onclick="processInput()">
+  <div id="nextBtnContainer">
+    <a class="action" href="{{ url_for('revision.revise', level=currLevel) }}">
+      <button>Continue</button>
+    </a>
+  </div>
+  <div id="trueJpInfo">
+    <p id="trueMeaning"></p>
+    <p id="truePrc"></p>
+  </div>
+      
+</form>
+<hr>
+
+<div id="testResult"><div>
+</div>
+
+    
+<script>
+  "use strict";
+  var jpWord = "{{reviseWord['jpWord']}}";  //This gives us access to this variable.
+  //Hide our next button by default.
+  document.getElementById("nextBtnContainer").style.display= "none";
+  document.getElementById("trueJpInfo").style.display= "none";
+
+  //TODO: Fix bug here.
+  var input = document.getElementById("pronunciation");
+  input.addEventListener("keyup", function(event) {
+  console.log("enter detected");
+  if (event.keyCode === 13) {
+  event.preventDefault();
+  document.getElementById("submitBtn").click();
+  
+  }
+  });
+  
+
+  
+</script>
+
+
+{% endblock %}
